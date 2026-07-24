@@ -1,7 +1,7 @@
 const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 
-let version = "v7";
+let version = "v8";
 
 router.get('/' + version + '/setupData', function (req, res) {
 
@@ -168,8 +168,19 @@ router.post('/' + version + '/dashboards/teams-view-team*', function (req, res) 
 })
 
 router.post('/' + version + '/dashboards/teams-view-transfer-task', function (req, res) {
-    res.redirect('teams-view-transfer-task-confirm')
+    res.redirect('teams-view-transfer-task-select')
 })
+router.post('/' + version + '/dashboards/teams-view-transfer-task-select', function (req, res) {
+    res.redirect('teams-view-transfer-task-to')
+})
+router.post('/' + version + '/dashboards/teams-view-transfer-task-to', function (req, res) {
+    res.redirect('teams-view-transfer-task-check-answers')
+})
+router.post('/' + version + '/dashboards/teams-view-transfer-task-check-answers', function (req, res) {
+    req.session.data['confirmTransfer'] = "Yes"
+    res.redirect('teams-view-transfer-task')
+})
+
 
 router.post('/' + version + '/dashboards/teams-view-transfer-task-confirm', function (req, res) {
    if ( req.session.data['confirmTransfer'] == "Yes" ){

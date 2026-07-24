@@ -12,9 +12,14 @@ Team overview
   <main class="govuk-main-wrapper">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
-        <span class="govuk-caption-l">{{data['teamName'] | capitalize}}</span>
-        <h1 class="govuk-heading-l">Team overview</h1>
-
+       <section class="dwp-quick-reference" aria-label="Case information">
+          <dl class="dwp-quick-reference__block">
+            <dt class="dwp-quick-reference__label dwp-quick-reference__label--primary govuk-visually-hidden">Team name:</dt>
+            <dd class="dwp-quick-reference__secondary">{{data['teamName'] | capitalize}}</dd>
+            <dt class="dwp-quick-reference__label govuk-visually-hidden">Section: </dt>
+            <dd class="dwp-quick-reference__primary">Team overview</dd>
+          </dl>
+        </section>
       </div>
     </div>
     <div class="govuk-grid-row">
@@ -47,7 +52,7 @@ Team overview
             </li>
             <li class="dwp-side-navigation__item">
               <a id="s-item-4" href="teams-view-transfer-task" class="dwp-side-navigation__link">
-                Transfer a task
+                Transfer tasks
               </a>
             </li>
           </ul>
@@ -55,6 +60,7 @@ Team overview
 
       </div>
       <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Team tasks</h1>
         <p class="govuk-body">Showing data from {{data.teamViewStart | govukDate }} to {{data.teamViewEnd | govukDate }} &nbsp;&nbsp;<a href="teams-view-team">Change</a></p>
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-third">
@@ -83,7 +89,7 @@ Team overview
               <div class="card-title">Allocated</div>
               <div class="card-description">to team members</div>
               <div class="card-headline">{{data.totalAllocated}}</div>
-              <div class="card-context">&nbsp;</div>
+              <div class="card-context">including tasks in BF</div>
             </div>
           </div>
           <div class="govuk-grid-column-one-third">

@@ -3,19 +3,16 @@
 
 
 {% block pageTitle %}
-Who would you like to transfer the tasks from?
+Which tasks would you like to transfer?
 {% endblock %}
 
 {% block content %}
 <div class="govuk-width-container">
   {% include '/includes/back' %}
   <main class="govuk-main-wrapper">
-    
-
-
-
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
+
         <section class="dwp-quick-reference" aria-label="Case information">
           <dl class="dwp-quick-reference__block">
             <dt class="dwp-quick-reference__label dwp-quick-reference__label--primary govuk-visually-hidden">Team name:</dt>
@@ -24,7 +21,6 @@ Who would you like to transfer the tasks from?
             <dd class="dwp-quick-reference__primary">Transfer tasks</dd>
           </dl>
         </section>
-
 
       </div>
     </div>
@@ -67,47 +63,63 @@ Who would you like to transfer the tasks from?
 
       </div>
       <div class="govuk-grid-column-two-thirds">
-        {% if data.confirmTransfer == "Yes" %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full">
-        <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
-          aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-          <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-              Success
-            </h2>
-          </div>
-          <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-              {% if data.selectedTransferTasks.length > 1 or data.selectedTransferTasks == 'All tasks' %}
-                Tasks transferred
-              {% else %}
-                Task transferred
-              {% endif %}
-            </h3>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
+
+        
         <form method="post">
+          
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-fieldset__heading">
-                  Who would you like to transfer the tasks from?
+                  Which tasks would you like to transfer?
                 </h1>
               </legend>
-              <div class="govuk-radios" data-module="govuk-radios">
-                {% for members in data[data['teamName']]%}
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="transferFrom{{loop.index}}" name="transferFrom" type="radio"
-                    value="{{members.firstName}} {{members.lastName}}">
-                  <label class="govuk-label govuk-radios__label" for="transferFrom{{loop.index}}">
-                    {{members.firstName}} {{members.lastName}}
+              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="selectedTransferTasks" name="selectedTransferTasks" type="checkbox" value="All tasks" data-behaviour="exclusive">
+                  <label class="govuk-label govuk-checkboxes__label" for="selectedTransferTasks">
+                    All tasks
                   </label>
                 </div>
-                {%endfor%}
+                <div class="govuk-checkboxes__divider">or</div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="selectedTransferTasks-1" name="selectedTransferTasks" type="checkbox" value="QQ 12 34 56 A - Angela Apple">
+                  <label class="govuk-label govuk-checkboxes__label" for="selectedTransferTasks-1">
+                    QQ 12 34 56 A - Angela Apple
+                  </label>
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="countries-2" name="selectedTransferTasks" type="checkbox" value="QQ 12 34 56 B - Bob Banana">
+                  <label class="govuk-label govuk-checkboxes__label" for="selectedTransferTasks-2">
+                    QQ 12 34 56 B - Bob Banana
+                  </label>
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="selectedTransferTasks-3" name="selectedTransferTasks" type="checkbox" value="QQ 12 34 56 C - Caroline Carrot">
+                  <label class="govuk-label govuk-checkboxes__label" for="selectedTransferTasks-3">
+                    QQ 12 34 56 C - Caroline Carrot
+                  </label>
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="selectedTransferTasks-4" name="selectedTransferTasks" type="checkbox" value="QQ 12 34 56 D - David Dragon-Fruit">
+                  <label class="govuk-label govuk-checkboxes__label" for="selectedTransferTasks-4">
+                    QQ 12 34 56 D - David Dragon-Fruit
+                  </label>
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="selectedTransferTasks-5" name="selectedTransferTasks" type="checkbox" value="QQ 12 34 56 E - Emily Eggplant">
+                  <label class="govuk-label govuk-checkboxes__label" for="selectedTransferTasks-5">
+                    QQ 12 34 56 E - Emily Eggplant
+                  </label>
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="selectedTransferTasks-6" name="selectedTransferTasks" type="checkbox" value="QQ 12 34 56 F - Fredrick Fennel">
+                  <label class="govuk-label govuk-checkboxes__label" for="selectedTransferTasks-6">
+                    QQ 12 34 56 F - Fredrick Fennel
+                  </label>
+                </div>
+                
               </div>
             </fieldset>
           </div>

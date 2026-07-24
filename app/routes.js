@@ -403,6 +403,7 @@ require('./views/v7/record-outcome/_routes')
 require('./views/v7/_routes')
 
 require('./views/v8/record-outcome/_routes')
+require('./views/v8/dashboards/_dashboard-routes')
 
 require('./views/sandpit/_sandpit-routes')
 

@@ -3,28 +3,25 @@
 
 
 {% block pageTitle %}
-Who would you like to transfer the tasks from?
+Which tasks would you like to transfer?
 {% endblock %}
 
 {% block content %}
 <div class="govuk-width-container">
   {% include '/includes/back' %}
   <main class="govuk-main-wrapper">
-    
-
-
-
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
+
         <section class="dwp-quick-reference" aria-label="Case information">
           <dl class="dwp-quick-reference__block">
-            <dt class="dwp-quick-reference__label dwp-quick-reference__label--primary govuk-visually-hidden">Team name:</dt>
+            <dt class="dwp-quick-reference__label dwp-quick-reference__label--primary govuk-visually-hidden">Team name:
+            </dt>
             <dd class="dwp-quick-reference__secondary">{{data['teamName'] | capitalize}}</dd>
             <dt class="dwp-quick-reference__label govuk-visually-hidden">Section: </dt>
             <dd class="dwp-quick-reference__primary">Transfer tasks</dd>
           </dl>
         </section>
-
 
       </div>
     </div>
@@ -67,47 +64,32 @@ Who would you like to transfer the tasks from?
 
       </div>
       <div class="govuk-grid-column-two-thirds">
-        {% if data.confirmTransfer == "Yes" %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full">
-        <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
-          aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-          <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-              Success
-            </h2>
-          </div>
-          <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading">
-              {% if data.selectedTransferTasks.length > 1 or data.selectedTransferTasks == 'All tasks' %}
-                Tasks transferred
-              {% else %}
-                Task transferred
-              {% endif %}
-            </h3>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
+
+
         <form method="post">
+
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h1 class="govuk-fieldset__heading">
-                  Who would you like to transfer the tasks from?
-                </h1>
-              </legend>
-              <div class="govuk-radios" data-module="govuk-radios">
-                {% for members in data[data['teamName']]%}
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="transferFrom{{loop.index}}" name="transferFrom" type="radio"
-                    value="{{members.firstName}} {{members.lastName}}">
-                  <label class="govuk-label govuk-radios__label" for="transferFrom{{loop.index}}">
-                    {{members.firstName}} {{members.lastName}}
+              <div class="govuk-form-group {% if data['banner']==" error" %}govuk-form-group--error{%endif%}">
+                <h1 class="govuk-label-wrapper">
+                  <label class="govuk-label govuk-label--l" for="user">
+                    Who would you like to transfer the tasks to?
                   </label>
-                </div>
-                {%endfor%}
+                </h1>
+                <p class="govuk-hint">Search for a staff member</p>
+                {% if data['banner']=="error" %}
+                <p id="passport-issued-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> Select a staff member
+                </p>
+                {% endif %}
+                <select class="govuk-select" id="user" name="transferTo" data-module="autocomplete" data-autoselect=""
+                  data-display-menu="" data-min-length="" data-show-all-values="" data-show-no-options-found="">
+                  <option value="" selected>Select an option</option>
+
+                  {% for person in data['users']%}
+                  <option value="{{person.firstName}} {{person.lastName}}">{{person.firstName}} {{person.lastName}} ({{person.email}})</option>
+                  {% endfor %}
+                </select>
               </div>
             </fieldset>
           </div>

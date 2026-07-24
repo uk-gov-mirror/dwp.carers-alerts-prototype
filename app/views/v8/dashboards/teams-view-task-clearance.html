@@ -12,8 +12,14 @@ Task Clearance
   <main class="govuk-main-wrapper">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-three-quarters">
-        <span class="govuk-caption-l">{{data['teamName'] | capitalize}}</span>
-        <h1 class="govuk-heading-l">Task clearance</h1>
+        <section class="dwp-quick-reference" aria-label="Case information">
+          <dl class="dwp-quick-reference__block">
+            <dt class="dwp-quick-reference__label dwp-quick-reference__label--primary govuk-visually-hidden">Team name:</dt>
+            <dd class="dwp-quick-reference__secondary">{{data['teamName'] | capitalize}}</dd>
+            <dt class="dwp-quick-reference__label govuk-visually-hidden">Section: </dt>
+            <dd class="dwp-quick-reference__primary">Team clearance</dd>
+          </dl>
+        </section>
 
       </div>
     </div>
@@ -47,7 +53,7 @@ Task Clearance
             </li>
             <li class="dwp-side-navigation__item">
               <a id="s-item-4" href="teams-view-transfer-task" class="dwp-side-navigation__link">
-                Transfer a task
+                Transfer tasks
               </a>
             </li>
           </ul>
@@ -55,6 +61,7 @@ Task Clearance
 
       </div>
       <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Cleared tasks</h1>
         <p class="govuk-body">Showing data from {{data.teamViewStart | govukDate }} to {{data.teamViewEnd | govukDate }} &nbsp;&nbsp;<a href="teams-view-team">Change</a></p>
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-third">
@@ -118,15 +125,6 @@ Task Clearance
               <div class="card-description">&nbsp;</div>
               <div class="card-headline">£{{ (overpayment * 0.21) | moneyFormat }}</div>
               <div class="card-context">&nbsp;</div>
-            </div>
-          </div>
-          <div class="govuk-grid-column-one-third">
-              <div class="card">
-                <div class="card-title">Civil penalties</div>
-                <div class="card-description">&nbsp;</div>
-                <div class="card-headline">{{ [1,2,3,4,5,6,7,8,9] | random }}</div>
-                <div class="card-context">&nbsp;</div>
-              </div>
             </div>
           </div>
         </div>
