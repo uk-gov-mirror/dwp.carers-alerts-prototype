@@ -1,0 +1,51 @@
+{% extends "layouts/main_post_2026.html" %}
+{% set globalNavSection = 'Manage requests' %}
+
+{% block pageTitle %}
+View recent interest
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    {% include "includes/back.njk"%}
+
+
+    <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">View recent interests</span>
+      Your interests
+    </h1>
+
+
+
+    {% if data.viewableInterests and data.viewableInterests != "" %}
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m govuk-visually-hidden">Requested</caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">National Insurance<br> number</th>
+          <th scope="col" class="govuk-table__header">Name</th>
+          <th scope="col" class="govuk-table__header">Interest requested</th>
+          <th scope="col" class="govuk-table__header "><span class="govuk-visually-hidden">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        {% for record in data.viewableInterests %}
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header"><a href="fake-check-earnings?record={{loop.index0}}">{{record.nino}}</a></th>
+            <td class="govuk-table__cell">{{record.firstName}} {{record.lastName}}</td>
+            <td class="govuk-table__cell">{{record.interestSetDate | govukDateTime}}</td>
+            <td class="govuk-table__cell"><a href="select-remove?record={{loop.index0}}">Remove from list</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {%else%}
+    <p class="govuk-body govuk-!-padding-bottom-9">You have no recent interests to view.</p>
+    {%endif%}
+
+
+  </div>
+</div>
+
+{% endblock %}

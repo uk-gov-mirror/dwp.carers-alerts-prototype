@@ -1,0 +1,167 @@
+[
+  {
+    "nino": "QQ123456A",
+    "firstName": "Alice",
+    "lastName": "Apple",
+    "dob": "14 January 1958",
+    "sex": "Female",
+    "organisations": [
+      {
+        "organisation": "TESCO PLC",
+        "startDate": "1 June 1976",
+        "endDate": "31 January 2023",
+        "earningType": "Employment"
+      },
+      {
+        "organisation": "AVIVA PENSIONS",
+        "startDate": "1 February 2023",
+        "endDate": "",
+        "earningType": "Pension"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456B",
+    "firstName": "Bob",
+    "lastName": "Banana",
+    "dob": "22 March 1955",
+    "sex": "Male"
+  },
+  {
+    "nino": "QQ123456C",
+    "firstName": "Carol",
+    "lastName": "Carrot",
+    "dob": "8 July 1961",
+    "sex": "Female",
+    "organisations": [
+      {
+        "organisation": "NHS ENGLAND",
+        "startDate": "5 August 1982",
+        "endDate": "",
+        "earningType": "Employment"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456D",
+    "firstName": "Derek",
+    "lastName": "Date",
+    "dob": "17 November 1953",
+    "sex": "Male",
+    "organisations": [
+      {
+        "organisation": "ROYAL MAIL",
+        "startDate": "10 May 1972",
+        "endDate": "31 December 2018",
+        "earningType": "Employment"
+      },
+      {
+        "organisation": "ROYAL LONDON",
+        "startDate": "1 January 2019",
+        "endDate": "",
+        "earningType": "Pension"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456E",
+    "firstName": "Ella",
+    "lastName": "Eggplant",
+    "dob": "29 May 1960",
+    "sex": "Female",
+    "organisations": [
+      {
+        "organisation": "BARCLAYS",
+        "startDate": "7 July 1980",
+        "endDate": "30 June 2022",
+        "earningType": "Employment"
+      },
+      {
+        "organisation": "SUNLIFE",
+        "startDate": "1 July 2022",
+        "endDate": "",
+        "earningType": "Pension"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456F",
+    "firstName": "Frank",
+    "lastName": "Fig",
+    "dob": "2 February 1977",
+    "sex": "Male",
+    "organisations": [
+      {
+        "organisation": "JAGUAR LAND ROVER",
+        "startDate": "15 April 1998",
+        "endDate": "",
+        "earningType": "Employment"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456G",
+    "firstName": "Grace",
+    "lastName": "Grape",
+    "dob": "11 September 1962",
+    "sex": "Female",
+    "organisations": [
+      {
+        "organisation": "SAINSBURYS",
+        "startDate": "9 January 1984",
+        "endDate": "",
+        "earningType": "Employment"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456H",
+    "firstName": "Harry",
+    "lastName": "Honeydew",
+    "dob": "4 December 1951",
+    "sex": "Male"
+  },
+  {
+    "nino": "QQ123456I",
+    "firstName": "Issac",
+    "lastName": "Ilama",
+    "dob": "11 December 1994",
+    "sex": "Male",
+    "organisations": [
+      {
+        "organisation": "THE PLOUGH INN (SHEFFIELD) LTD",
+        "startDate": "9 January 2022",
+        "endDate": "",
+        "earningType": "Employment"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456J",
+    "firstName": "Joseph",
+    "lastName": "Jackfruit",
+    "dob": "11 September 1952",
+    "sex": "Female",
+    "organisations": [
+      {
+        "organisation": "SAINSBURYS",
+        "startDate": "9 January 2025",
+        "endDate": "",
+        "earningType": "Employment"
+      },
+      {
+        "organisation": "ABERDEEN PLC",
+        "startDate": "9 January 2008",
+        "endDate": "12 December 2024",
+        "earningType": "Pension"
+      }
+    ]
+  },
+  {
+    "nino": "QQ123456K",
+    "firstName": "Karen",
+    "lastName": "Kale",
+    "dob": "23 October 2000",
+    "sex": "Female"
+  }
+]

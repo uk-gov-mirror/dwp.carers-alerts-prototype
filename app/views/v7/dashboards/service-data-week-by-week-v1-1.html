@@ -13,8 +13,8 @@ Week by week report
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper" id="main-content">
     {% include '/includes/back' %}
-    <span class="govuk-caption-xl">Service dashboard</span>
-    <h1 class="govuk-heading-xl">Week by week report</h1>
+    <span class="govuk-caption-l">Service dashboard</span>
+    <h1 class="govuk-heading-ll">Week by week report</h1>
     <p>Showing
       {%if data['selectedBenefits'].includes('PC') %}Pension Credit
       {%elif data['selectedBenefits'].includes('CA') %}Carer's Allowance
@@ -64,7 +64,7 @@ Week by week report
 
         <div class="govuk-form-group">
           <p class="govuk-body">
-            <a href="javascript:copy()">Copy data to clipboard</a><br>
+            <a class="govuk-button" href="javascript:copy()">Copy data to clipboard</a><br>
           </p>
         </div>
 

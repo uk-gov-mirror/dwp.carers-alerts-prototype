@@ -18,3 +18,8 @@ addFilter('randomDateFuture', function (date, number) {
   tempDate.setDate(tempDate.getDate() + rndInt)
   return tempDate.toISOString().split('T')[0]
 })
+
+
+addFilter('formatNino', function (nino) {
+  return nino.replace(/.{2}(?!$)/g, "$& ");
+})

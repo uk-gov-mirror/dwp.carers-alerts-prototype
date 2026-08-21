@@ -1,0 +1,41 @@
+{% extends "layouts/main_post_2026.html" %}
+{% set globalNavSection = 'Manage requests' %}
+
+{% block pageTitle %}
+Confirm their details
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <section class="dwp-quick-reference govuk-!-padding-top-6" aria-label="Case information">
+      <dl class="dwp-quick-reference__block">
+        <dt class="dwp-quick-reference__label govuk-visually-hidden">Name:</dt>
+        <dd class="dwp-quick-reference__primary">{{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}}</dd>
+        <dt class="dwp-quick-reference__label dwp-quick-reference__label--primary govuk-visually-hidden">National Insurance number:</dt>
+        <dd class="dwp-quick-reference__secondary">{{data.selectedPerson.nino | formatNino}}</dd>
+      </dl>
+    </section>
+
+    <h1 class="govuk-heading-l">
+      No earnings available
+    </h1>
+
+    <p class="govuk-body">
+      No earnings can be found for {{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}}.
+      If they are not entitled to {{data.benefit}}, you should <a href="stop-request-clarify">unset the interest</a>.
+    </p>
+    <p class="govuk-body">
+      If you need to check the earnings of someone else you can <a href="set-interest">make a new request</a>
+    </p>
+
+    
+
+  </div>
+</div>
+
+
+
+{% endblock %}

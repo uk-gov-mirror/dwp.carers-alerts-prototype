@@ -2,7 +2,7 @@
 {% set globalNavSection = 'Manage requests' %}
 
 {% block pageTitle %}
-Stop request
+Interest unse
 {% endblock %}
 
 {% block content %}
@@ -13,21 +13,20 @@ Stop request
       <div class="govuk-grid-column-two-thirds">
         <div class="govuk-panel govuk-panel--confirmation">
           <h1 class="govuk-panel__title">
-            {% if data['test']=="a" %}Interest unset
-            {% elif data['test'] == "b" %}Request cancelled
-            {% endif%}
+            Interest unset
           </h1>
         </div>
-        {% if data.benefit == "Pension Credit" or data.benefit == "Housing Benefit" %}
-        <h2 class="govuk-heading-m">What happens next</h2>
         <p class="govuk-body">
-          You will need to check Searchlight to see whether Bob Banana has a partner. You may need to <a href="stop-request" class="govuk-link">
-            {% if data['test']=="a" %}unset an interest
-            {% elif data['test'] == "b" %}cancel a request
-            {%endif%}
-            </a> for them too.
+          The interest has been unset for {{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}} and no further alerts will be generated when earnings change.
         </p>
+        {% if data.benefit == "Pension Credit" or data.benefit == "Housing Benefit" %}
+        <p class="govuk-body">
+          You will need to check Searchlight to see whether {{data.selectedPerson.firstName}} has a partner. You may need to <a href="stop-request" class="govuk-link">
+          unset an interest</a> for them too.
+        </p>
+        
         {% endif %}
+
         <a href="clear-manage-sessions" class="govuk-button">Finish</a>
       </div>
     </div>

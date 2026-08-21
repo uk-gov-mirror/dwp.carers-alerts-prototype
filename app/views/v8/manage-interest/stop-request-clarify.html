@@ -20,11 +20,8 @@ Stop request
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h2 class="govuk-fieldset__heading">
               Are you sure you want to
-              {% if data['test']=="a" %}unset the interest in
-              {% elif data['test'] == "b" %}
-              cancel the {{data.benefit}} request for</span>
-              {% endif%}
-              Bob Banana?
+              unset the interest in
+              {{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}}?
             </h2>
           </legend>
           <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">

@@ -1,0 +1,78 @@
+{% extends "layouts/main_post_2026.html" %}
+{% set globalNavSection = 'Manage requests' %}
+
+{% block pageTitle %}
+Set an interest start date
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {% include "includes/back.njk"%}
+
+    
+
+    <section class="dwp-quick-reference" aria-label="Case information">
+      <dl class="dwp-quick-reference__block">
+        <dt class="dwp-quick-reference__label govuk-visually-hidden">Name:</dt>
+        <dd class="dwp-quick-reference__primary">{{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}}</dd>
+        <dt class="dwp-quick-reference__label dwp-quick-reference__label--primary govuk-visually-hidden">National Insurance number:</dt>
+        <dd class="dwp-quick-reference__secondary">{{data.selectedPerson.nino | formatNino}}</dd>
+      </dl>
+    </section>
+
+    
+    <form method="post">
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" role="group" aria-describedby="set-interest-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h1 class="govuk-fieldset__heading">
+              What date would you like to view the earnings from?
+            </h1>
+          </legend>
+          <div id="set-interest-hint" class="govuk-hint">
+            For example, 27 3 2007. The date cannot be before {{data.earningsEarliestDate | govukDate}}.
+          </div>
+          <div class="govuk-date-input" id="set-interest">
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="changeViewDay">
+                  Day
+                </label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="changeViewDay" name="changeViewDay" type="text" inputmode="numeric">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="changeViewMonth">
+                  Month
+                </label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="changeViewMonth" name="changeViewMonth" type="text" inputmode="numeric">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="changeViewYear">
+                  Year
+                </label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="changeViewYear" name="changeViewYear" type="text" inputmode="numeric">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      
+      <div class="govuk-form-group">
+        <button type="submit" class="govuk-button">Continue</button>
+      </div>
+    
+    </form>
+
+  </div>
+</div>
+
+
+
+{% endblock %}

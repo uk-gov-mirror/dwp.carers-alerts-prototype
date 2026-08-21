@@ -3,38 +3,55 @@
     hidden>
     Menu
     </button>
-    <ul id="navigation" class="dwp-header-navigation__list">
-    <li class="dwp-header-navigation__item {{ ' govuk-header__navigation-item--active' if globalNavSection == 'Manage requests' }}">
-        <a href="/{{data.version}}/manage-interest/">
-        {% if data['version'] == "v7" and data['test'] == "b" %}
-        Manage requests
-        {% elif data['version'] == "v7" and data['test'] == "a" %}
-        Manage interests
-        {% else %}
-        Make a new request
-        {% endif %}
-        </a>
-    </li>
-    <li class="dwp-header-navigation__item{{ ' govuk-header__navigation-item--active' if globalNavSection == 'My tasks' }}">
+    <ul id="navigation" class="dwp-header-navigation__list govuk-!-font-weight-bold">
+    {% if data.agentType == "BAU"%}
+        <li class="dwp-header-navigation__item {{ ' govuk-header__navigation-item--active' if globalNavSection == 'Manage requests' }} govuk-!-font-weight-bold">
+            <a href="/{{data.version}}/manage-interest/">
+            {% if data['version'] == "v7" and data['test'] == "b" %}
+            Manage requests
+            {% elif data['test'] == "a" %}
+            Manage interests
+            {% else %}
+            Make a new request
+            {% endif %}
+            </a>
+        </li>
+    
+    
+    {%else%}
+     <li class="dwp-header-navigation__item {{ ' govuk-header__navigation-item--active' if globalNavSection == 'Manage requests' }} govuk-!-font-weight-bold">
+            <a href="/{{data.version}}/manage-interest/">
+            {% if data['version'] == "v7" and data['test'] == "b" %}
+            Manage requests
+            {% elif data['test'] == "a" %}
+            Manage interests
+            {% else %}
+            Make a new request
+            {% endif %}
+            </a>
+        </li>
+    <li class="dwp-header-navigation__item{{ ' govuk-header__navigation-item--active' if globalNavSection == 'My tasks' }} govuk-!-font-weight-bold">
         <a href="/{{data.version}}/tasks/index" >
         My tasks
         </a>
     </li>
-    <li class="dwp-header-navigation__item">
+    <li class="dwp-header-navigation__item govuk-!-font-weight-bold">
         <a href="#">
         Expiring tasks
         </a>
     </li>
-    <li class="dwp-header-navigation__item{{ ' govuk-header__navigation-item--active' if globalNavSection == 'My teams' }}">
+    <li class="dwp-header-navigation__item{{ ' govuk-header__navigation-item--active' if globalNavSection == 'My teams' }} govuk-!-font-weight-bold">
         <a href="/{{data.version}}/dashboards/teams-my-teams">
         Manage teams
         </a>
     </li>
-    <li class="dwp-header-navigation__item {{ ' govuk-header__navigation-item--active' if globalNavSection == 'Service data' }}">
+    <li class="dwp-header-navigation__item {{ ' govuk-header__navigation-item--active' if globalNavSection == 'Service data' }} govuk-!-font-weight-bold">
         <a href="/{{data.version}}/dashboards/service-dashboard">
         Service dashboard
         </a>
     </li>
     
+
+    {% endif %}
     </ul>
 </nav>

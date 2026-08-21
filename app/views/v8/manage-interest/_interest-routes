@@ -1,10 +1,264 @@
 const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 
-let version = "v7";
+let version = "v8";
+
+router.post('/' + version + '/manage-interest/ur', function (req, res) {
+    res.redirect("index")
+})
+
+//// SET AN INTEREST ////
+
+router.post('/' + version + '/manage-interest/set-interest', function (req, res) {
+   req.session.data['error'] = "false"
+   let nino = req.session.data['nino'].toUpperCase().replace(/ /g,'')
+   req.session.data['nino'] = nino
+   let people = req.session.data['earnings']
+   req.session.data['selectedPerson'] = null
+
+   for (let x = 0; x < people.length; x++) { 
+        if(people[x].nino == nino){
+            req.session.data['selectedPerson'] = people[x];
+        }
+    }
+    if(req.session.data['selectedPerson']!=null){
+        res.redirect("set-interest-confirm");
+    }
+    else{
+        req.session.data['error'] = "true"
+        res.redirect("set-interest")
+    }
+})
+
+router.post('/' + version + '/manage-interest/set-interest-confirm', function (req, res) {
+    
+    let page;
+    req.session.data['error'] = "false"
+    if(req.session.data['confirmPerson']=="Yes"){
+
+        if(req.session.data['activeInterests']){
+            let tempArray = req.session.data['activeInterests']
+            for (let x = 0; x < tempArray.length; x++) {
+                if(tempArray[x].nino == req.session.data['nino']){
+                    req.session.data['interestStart'] = new Date(2024-12-01)
+                    res.redirect("set-interest-view-earnings-confirm");
+                    return;
+                }
+            }
+        }
+
+        if(req.session.data['benefit']=="Housing Benefit"){
+            res.redirect("set-interest-benefit-select");
+        }
+        else{
+            res.redirect("set-interest-start-date")
+        }
+
+    }
+    else if(req.session.data['confirmPerson']=="No"){
+        res.redirect("set-interest")
+    }
+    else{
+        req.session.data['error'] = "true"
+        res.redirect("set-interest-confirm")
+    }
+
+})
+router.post('/' + version + '/manage-interest/set-interest-benefit-select', function (req, res) {
+    res.redirect("set-interest-start-date")
+})
+
+router.post('/' + version + '/manage-interest/set-interest-start-date', function (req, res) {
+    // adding the interest start date and interest set date to the selectPerson array. This now gives a full interest record for the searched person
+    req.session.data.selectedPerson.interestSetDate = new Date() //setting date and time at point the page is posted
+    req.session.data.selectedPerson.interestStartDate = new Date(req.session.data['set-interest-year']+"-"+req.session.data['set-interest-month']+"-"+req.session.data['set-interest-day']) // the input from this page
+    res.redirect("set-interest-view-earnings-confirm")
+})
+
+router.post('/' + version + '/manage-interest/set-interest-view-earnings-confirm', function (req, res) {
+
+    // creates an array that tracks active interests
+    req.session.data['interestSet'] = true
+    let tempArray = []
+    let tempObject = req.session.data['selectedPerson']
+    let userListed = false;
+    req.session.data.newEarningsStartDate = null;
+
+    if(req.session.data['activeInterests']){
+        tempArray = req.session.data['activeInterests']  
+    }
+
+    for (let x = 0; x < tempArray.length; x++) {
+        if(tempArray[x].nino == tempObject.nino){
+            // user is already in list
+            userListed = true;
+        }
+        else{
+            //user not in list
+            
+        }
+    }
+
+    if(userListed!=true){
+        tempArray.push(tempObject);
+        req.session.data['activeInterests'] = tempArray
+        req.session.data['viewableInterests'] = tempArray
+    }
+
+    if(req.session.data['viewEarnings'] == "Yes"){
+        // look to see if they have earnings organisations
+        if(req.session.data['selectedPerson'].organisations){
+
+             // identify what dates to show on the view screen
+            let TAMdate = new Date(req.session.data.selectedPerson.interestStartDate);
+            let today = new Date();
+            let timeDifference = Math.abs(today - TAMdate);
+            let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+            req.session.data['earningsEarliestDate'] = new Date(TAMdate.setDate(TAMdate.getDate() - 90))
+
+            if(daysDifference>275){
+                // show full year of data
+                req.session.data['earningsStartDate'] = new Date(today.setDate(today.getDate() - 364))
+                req.session.data['partYear'] = false
+            }
+            else{
+                // show TAM date + 90 days
+                req.session.data['earningsStartDate'] = new Date(TAMdate.setDate(TAMdate.getDate() - 90))
+                req.session.data['partYear'] = true
+            }
+            req.session.data.route = "setInterest"
+            res.redirect("earnings-view")
+        }
+        else{
+            res.redirect("earnings-not-available")
+        }
+    }
+    else if(req.session.data['viewEarnings'] == "No"){
+        res.redirect("./")
+    }
+})
+
+router.post('/' + version + '/manage-interest/earnings-view', function (req, res) {
+    let viewableInterestsArray =  req.session.data['viewableInterests']
+    let activeInterestsArray = req.session.data['activeInterests']
+    let tempObject = req.session.data['selectedPerson']
+   
+    if(req.session.data['entitledToBenefit'] == "Yes"){
+        //remove from viewableInterests but keep in activeInterests
+        for(let x = 0; x < viewableInterestsArray.length; x++) {
+            if(viewableInterestsArray[x].nino == tempObject.nino){
+                viewableInterestsArray.splice(x, 1);
+            }
+        }
+        req.session.data['viewableInterests'] = viewableInterestsArray 
+        req.session.data['activeInterests'] = activeInterestsArray
+        res.redirect("./")
+    }
+    else if(req.session.data['entitledToBenefit'] == "No"){
+        //remove from viewableInterests and activeInterests
+        for(let x = 0; x < viewableInterestsArray.length; x++) {
+            if(viewableInterestsArray[x].nino == tempObject.nino){
+                viewableInterestsArray.splice(x, 1);
+            }
+        }
+        for(let x = 0; x < activeInterestsArray.length; x++) {
+            if(activeInterestsArray[x].nino == tempObject.nino){
+                activeInterestsArray.splice(x, 1);
+            }
+        }
+        req.session.data['viewableInterests'] = viewableInterestsArray 
+        req.session.data['activeInterests'] = activeInterestsArray
+        res.redirect("stop-request-confirmation")
+    }
+})
+
+router.post('/' + version + '/manage-interest/earnings-view-change-date', function (req, res) {
+    req.session.data['newEarningsStartDate'] = new Date(req.session.data['changeViewYear']+"-"+req.session.data['changeViewMonth']+"-"+req.session.data['changeViewDay'])
+    res.redirect("earnings-view")
+})
+
+router.get('/' + version + '/manage-interest/fake-check-earnings', function (req, res) {
+    // this isn't an actual page. It's simply used to create data and then redirect.
+    req.session.data.route = "viewInterest" // sets the journey so we can reuse the viewearnings page in different journeys
+    req.session.data.selectedPerson = req.session.data['viewableInterests'][req.session.data['record']]
+    req.session.data.newEarningsStartDate = null
+    // look to see if they have earnings organisations
+        if(req.session.data['selectedPerson'].organisations){
+
+             // identify what dates to show on the view screen
+            let TAMdate = new Date(req.session.data.selectedPerson.interestStartDate);
+            let today = new Date();
+            let timeDifference = Math.abs(today - TAMdate);
+            let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+            req.session.data['earningsEarliestDate'] = new Date(TAMdate.setDate(TAMdate.getDate() + 90))
+
+            if(daysDifference>275){
+                // show full year of data
+                req.session.data['earningsStartDate'] = new Date(today.setDate(today.getDate() - 364))
+                req.session.data['partYear'] = false
+            }
+            else{
+                // show TAM date + 90 days
+                req.session.data['earningsStartDate'] = new Date(TAMdate.setDate(TAMdate.getDate() - 90))
+                req.session.data['partYear'] = true
+            }
+            req.session.data.route = "setInterest"
+            res.redirect("earnings-view")
+        }
+        else{
+            res.redirect("earnings-not-available")
+        }
+
+    
+})
+
+router.get('/' + version + '/manage-interest/select-remove', function (req, res) {
+    req.session.data['selectedPerson'] = req.session.data['viewableInterests'][req.session.data.record]
+    res.redirect('/'+version + '/manage-interest/view-remove-from-list')
+})
+
+router.post('/' + version + '/manage-interest/view-remove-from-list', function (req, res) {
+    let viewableInterestsArray =  req.session.data['viewableInterests']
+    let activeInterestsArray = req.session.data['activeInterests']
+    let tempObject = req.session.data['selectedPerson']
+   
+    if(req.session.data['entitledToBenefit'] == "Yes"){
+        //remove from viewableInterests but keep in activeInterests
+        for(let x = 0; x < viewableInterestsArray.length; x++) {
+            if(viewableInterestsArray[x].nino == tempObject.nino){
+                viewableInterestsArray.splice(x, 1);
+            }
+        }
+        req.session.data['viewableInterests'] = viewableInterestsArray 
+        req.session.data['activeInterests'] = activeInterestsArray
+        res.redirect("./")
+    }
+    else if(req.session.data['entitledToBenefit'] == "No"){
+        //remove from viewableInterests and activeInterests
+        for(let x = 0; x < viewableInterestsArray.length; x++) {
+            if(viewableInterestsArray[x].nino == tempObject.nino){
+                viewableInterestsArray.splice(x, 1);
+            }
+        }
+        for(let x = 0; x < activeInterestsArray.length; x++) {
+            if(activeInterestsArray[x].nino == tempObject.nino){
+                activeInterestsArray.splice(x, 1);
+            }
+        }
+        req.session.data['viewableInterests'] = viewableInterestsArray 
+        req.session.data['activeInterests'] = activeInterestsArray
+        res.redirect("stop-request-confirmation")
+    }
+})
+
+
+//// UNSET INTERESTS ////
 
 router.post('/' + version + '/manage-interest/stop-request-identity-confirm', function (req, res) {
     if(req.session.data['confirmCitizen'] == 'yes'){
+        
         res.redirect("stop-request-clarify")
     }
     else{
@@ -14,6 +268,22 @@ router.post('/' + version + '/manage-interest/stop-request-identity-confirm', fu
 
 router.post('/' + version + '/manage-interest/stop-request-clarify', function (req, res) {
     if(req.session.data['stopRequest'] == 'yes'){
+        let viewableInterestsArray =  req.session.data['viewableInterests']
+        let activeInterestsArray = req.session.data['activeInterests']
+        let tempObject = req.session.data['selectedPerson']
+
+        for(let x = 0; x < viewableInterestsArray.length; x++) {
+            if(viewableInterestsArray[x].nino == tempObject.nino){
+                viewableInterestsArray.splice(x, 1);
+            }
+        }
+        for(let x = 0; x < activeInterestsArray.length; x++) {
+            if(activeInterestsArray[x].nino == tempObject.nino){
+                activeInterestsArray.splice(x, 1);
+            }
+        }
+        req.session.data['viewableInterests'] = viewableInterestsArray 
+        req.session.data['activeInterests'] = activeInterestsArray
         res.redirect("stop-request-confirmation")
     }
     else{

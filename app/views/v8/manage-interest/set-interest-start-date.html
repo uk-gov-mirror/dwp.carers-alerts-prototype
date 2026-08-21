@@ -1,0 +1,74 @@
+{% extends "layouts/main_post_2026.html" %}
+{% set globalNavSection = 'Manage requests' %}
+
+{% block pageTitle %}
+Set an interest start date
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {% include "includes/back.njk"%}
+
+    
+
+    <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">Set an interest</span>
+      Set an interest start date
+    </h1>
+
+    
+    <form method="post">
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" role="group" aria-describedby="set-interest-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h1 class="govuk-fieldset__heading">
+              What date would you like to set the interest from?
+            </h1>
+          </legend>
+          <div id="set-interest-hint" class="govuk-hint">
+            For example, 27 3 2007
+          </div>
+          <div class="govuk-date-input" id="set-interest">
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="set-interest-day">
+                  Day
+                </label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="set-interest-day" name="set-interest-day" type="text" inputmode="numeric">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="set-interest-month">
+                  Month
+                </label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="set-interest-month" name="set-interest-month" type="text" inputmode="numeric">
+              </div>
+            </div>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="set-interest-year">
+                  Year
+                </label>
+                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="set-interest-year" name="set-interest-year" type="text" inputmode="numeric">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      
+      <div class="govuk-form-group">
+        <button type="submit" class="govuk-button">Continue</button>
+      </div>
+    
+    </form>
+
+  </div>
+</div>
+
+
+
+{% endblock %}

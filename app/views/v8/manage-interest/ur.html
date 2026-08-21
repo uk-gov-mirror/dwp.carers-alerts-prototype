@@ -1,0 +1,65 @@
+{% extends "layouts/index.html" %}
+
+{% block pageTitle %}
+{{ serviceName }} homepage
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" id="main-content">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-l">User Research</h1>
+        <form method="post">
+          <input type="hidden" id="test" name="test" value="a">
+          <input type="hidden" id="version" name="version" value="v8">
+          <input type="hidden" id="version" name="agentType" value="BAU">
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                <h1 class="govuk-fieldset__heading">
+                  Which benefit do you work for?
+                </h1>
+              </legend>
+              
+              <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="benefit" name="benefit" type="radio" value="Pension Credit" checked="checked">
+                  <label class="govuk-label govuk-radios__label" for="benefit">
+                    Pension Credit
+                  </label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="benefit-2" name="benefit" type="radio" value="Carer's Allowance" {% if data.benefit == "Carer's Allowance" %} checked="checked"{%endif%}>
+                  <label class="govuk-label govuk-radios__label" for="benefit-2">
+                    Carer's Allowance
+                  </label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="benefit-4" name="benefit" type="radio" value="Employment Support Allowance" {% if data.benefit == "Employment Support Allowance" %} checked="checked"{%endif%}>
+                  <label class="govuk-label govuk-radios__label" for="benefit-4">
+                    Employment Support Allowance
+                  </label>
+                </div>
+                <div class="govuk-radios__divider">or</div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="benefit-3" name="benefit" type="radio" value="Housing Benefit" {% if data.benefit == "Housing Benefit" %} checked="checked"{%endif%}>
+                  <label class="govuk-label govuk-radios__label" for="benefit-3">
+                    A local Authority
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="govuk-form-group">
+            <button class="govuk-button">Start</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+{% endblock %}
