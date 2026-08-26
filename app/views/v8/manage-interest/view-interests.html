@@ -30,7 +30,7 @@ View recent interest
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        {% for record in data.viewableInterests %}
+        {% for record in data.viewableInterests.reverse() %}
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header"><a href="fake-check-earnings?record={{loop.index0}}">{{record.nino}}</a></th>
             <td class="govuk-table__cell">{{record.firstName}} {{record.lastName}}</td>

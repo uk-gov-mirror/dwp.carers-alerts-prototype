@@ -25,9 +25,9 @@ Confirm their details
     <p class="govuk-body">
       Showing data from 
       {% if data.newEarningsStartDate %}
-       {{ data.newEarningsStartDate | govukDate }} to {{ "today" | govukDate }}{%if data.partYear == false%}. <a href="earnings-view-change-date">Show other dates.</a>{%endif%}
+       {{ data.newEarningsStartDate | govukDate }} to {{ "today" | govukDate }}. <a href="earnings-view-change-date">Show other dates.</a>
       {% else %}
-        {{ data.earningsStartDate | govukDate }} to {{ "today" | govukDate }}{%if data.partYear == false%}. <a href="earnings-view-change-date">Show other dates.</a>{%endif%}
+        {{ data.earningsStartDate | govukDate }} to {{ "today" | govukDate }}. <a href="earnings-view-change-date">Show other dates.</a>
       {% endif %}
     </p>
   </div>
