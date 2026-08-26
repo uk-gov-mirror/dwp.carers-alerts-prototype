@@ -25,18 +25,18 @@ Set an interest start date
         <fieldset class="govuk-fieldset" role="group" aria-describedby="set-interest-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h1 class="govuk-fieldset__heading">
-              What date would you like earnings alerts to start from?
+              What date would you like earnings alerts to start from? 
             </h1>
           </legend>
           <div id="set-interest-hint" class="govuk-hint">
             {% if data.benefit == "Pension Credit"%}
-              This is usually the date the claim was received unless you are backdating. For example, 24 3 2026.
+            This is usually the date the claim was received unless you are backdating. For example, 24 3 2026.
             {% elseif data.benefit == "Carer's Allowance"%}
-              This is usually the effective date of the claim. For example, 24 3 2026.
+            This is usually the effective date of the claim. For example, 24 3 2026.
             {% elseif data.benefit == "Employment Support Allowance"%}
-              This is usually the date of the claim or the change of circumstance. For example, 24 3 2026.
+            This is usually the date of the claim or the change of circumstance. For example, 24 3 2026.
             {% else %}
-              This is usually the entitlement start date. For example, 24 3 2026.
+            This is usually the entitlement start date. For example, 24 3 2026.
             {% endif %}
           </div>
           <div class="govuk-date-input" id="set-interest">
