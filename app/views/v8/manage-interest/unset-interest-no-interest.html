@@ -1,0 +1,32 @@
+{% extends "layouts/main_post_2026.html" %}
+{% set globalNavSection = 'Manage requests' %}
+
+{% block pageTitle %}
+No interest set
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    
+    <h1 class="govuk-heading-l  govuk-!-padding-top-6">
+      <span class="govuk-caption-l">Unset an interest</span>
+      No interest set
+    </h1>
+
+    <p class="govuk-body">
+      There is no active {{data.benefit}} interest set for {{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}}. 
+    </p>
+
+   <p class="govuk-body">
+      <a href="./">Return to manage interests.</a>
+    </p>
+    
+
+    
+
+  </div>
+</div>
+
+{% endblock %}

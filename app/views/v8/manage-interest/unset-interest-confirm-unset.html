@@ -2,38 +2,37 @@
 {% set globalNavSection = 'Manage requests' %}
 
 {% block pageTitle %}
-Stop request
+Confirm cancellation of earnings alerts
 {% endblock %}
 
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     {% include "includes/back.njk"%}
-    {% if data['test']=="a" %} <span class="govuk-caption-l">Unset an interest</span>
-    {% elif data['test'] == "b" %}
-    <span class="govuk-caption-l">Cancel a request</span>
-    {% endif%}
-    <h1 class="govuk-heading-l">Confirm cancellation of alerts</h1>
+    
+    <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">Unset an interest</span>
+      Confirm cancellation of earnings alerts
+    </h1>
+
     <form method="post">
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <h2 class="govuk-fieldset__heading">
-              Are you sure you want to
-              unset the interest in
-              {{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}}?
+              Are you sure you want to unset the interest in {{data.selectedPerson.firstName}} {{data.selectedPerson.lastName}}?
             </h2>
           </legend>
           <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="stopRequest" name="stopRequest" type="radio" value="yes">
-              <label class="govuk-label govuk-radios__label" for="stopRequest">
+              <input class="govuk-radios__input" id="unsetInterestConfirm" name="unsetInterestConfirm" type="radio" value="Yes">
+              <label class="govuk-label govuk-radios__label" for="unsetInterestConfirm">
                 Yes
               </label>
             </div>
             <div class="govuk-radios__item">
-              <input class="govuk-radios__input" id="stopRequest-2" name="stopRequest" type="radio" value="no">
-              <label class="govuk-label govuk-radios__label" for="stopRequest-2">
+              <input class="govuk-radios__input" id="unsetInterestConfirm-2" name="unsetInterestConfirm" type="radio" value="No">
+              <label class="govuk-label govuk-radios__label" for="unsetInterestConfirm-2">
                 No
               </label>
             </div>

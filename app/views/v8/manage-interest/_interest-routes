@@ -1,6 +1,9 @@
 const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 
+
+//routes sections
+
 let version = "v8";
 
 router.post('/' + version + '/manage-interest/ur', function (req, res) {
@@ -140,36 +143,18 @@ router.post('/' + version + '/manage-interest/set-interest-view-earnings-confirm
 })
 
 router.post('/' + version + '/manage-interest/earnings-view', function (req, res) {
-    let viewableInterestsArray =  req.session.data['viewableInterests']
-    let activeInterestsArray = req.session.data['activeInterests']
-    let tempObject = req.session.data['selectedPerson']
+   
    
     if(req.session.data['entitledToBenefit'] == "Yes"){
-        //remove from viewableInterests but keep in activeInterests
-        for(let x = 0; x < viewableInterestsArray.length; x++) {
-            if(viewableInterestsArray[x].nino == tempObject.nino){
-                viewableInterestsArray.splice(x, 1);
-            }
-        }
-        req.session.data['viewableInterests'] = viewableInterestsArray 
-        req.session.data['activeInterests'] = activeInterestsArray
+        //remove from the viewable interest arrays
+        req.session.data['viewableInterests'] = removeFromAnInterestList(req.session.data['viewableInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the activeInterest array and current selected person
         res.redirect("./")
     }
     else if(req.session.data['entitledToBenefit'] == "No"){
-        //remove from viewableInterests and activeInterests
-        for(let x = 0; x < viewableInterestsArray.length; x++) {
-            if(viewableInterestsArray[x].nino == tempObject.nino){
-                viewableInterestsArray.splice(x, 1);
-            }
-        }
-        for(let x = 0; x < activeInterestsArray.length; x++) {
-            if(activeInterestsArray[x].nino == tempObject.nino){
-                activeInterestsArray.splice(x, 1);
-            }
-        }
-        req.session.data['viewableInterests'] = viewableInterestsArray 
-        req.session.data['activeInterests'] = activeInterestsArray
-        res.redirect("stop-request-confirmation")
+        //remove from both the active and viewable interest arrays
+        req.session.data['viewableInterests'] = removeFromAnInterestList(req.session.data['viewableInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the activeInterest array and current selected person
+        req.session.data['activeInterests'] = removeFromAnInterestList(req.session.data['activeInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the activeInterest array and current selected person
+        res.redirect("unset-interest-confirmation")
     }
 })
 
@@ -226,71 +211,72 @@ router.post('/' + version + '/manage-interest/view-remove-from-list', function (
    
     if(req.session.data['entitledToBenefit'] == "Yes"){
         //remove from viewableInterests but keep in activeInterests
-        for(let x = 0; x < viewableInterestsArray.length; x++) {
-            if(viewableInterestsArray[x].nino == tempObject.nino){
-                viewableInterestsArray.splice(x, 1);
-            }
-        }
-        req.session.data['viewableInterests'] = viewableInterestsArray 
-        req.session.data['activeInterests'] = activeInterestsArray
+        req.session.data['viewableInterests'] = removeFromAnInterestList(req.session.data['viewableInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the activeInterest array and current selected person
         res.redirect("./")
     }
     else if(req.session.data['entitledToBenefit'] == "No"){
         //remove from viewableInterests and activeInterests
-        for(let x = 0; x < viewableInterestsArray.length; x++) {
-            if(viewableInterestsArray[x].nino == tempObject.nino){
-                viewableInterestsArray.splice(x, 1);
-            }
-        }
-        for(let x = 0; x < activeInterestsArray.length; x++) {
-            if(activeInterestsArray[x].nino == tempObject.nino){
-                activeInterestsArray.splice(x, 1);
-            }
-        }
-        req.session.data['viewableInterests'] = viewableInterestsArray 
-        req.session.data['activeInterests'] = activeInterestsArray
-        res.redirect("stop-request-confirmation")
+        req.session.data['viewableInterests'] = removeFromAnInterestList(req.session.data['viewableInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the activeInterest array and current selected person
+        req.session.data['activeInterests'] = removeFromAnInterestList(req.session.data['activeInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the activeInterest array and current selected person
+        res.redirect("unset-interest-confirmation")
     }
 })
 
 
 //// UNSET INTERESTS ////
 
-router.post('/' + version + '/manage-interest/stop-request-identity-confirm', function (req, res) {
-    if(req.session.data['confirmCitizen'] == 'yes'){
-        
-        res.redirect("stop-request-clarify")
+router.post('/' + version + '/manage-interest/unset-interest', function (req, res) {
+   req.session.data['error'] = "false"
+   let nino = req.session.data['nino'].toUpperCase().replace(/ /g,'')
+   req.session.data['nino'] = nino
+   let people = req.session.data['earnings']
+   req.session.data['selectedPerson'] = null
+
+   for (let x = 0; x < people.length; x++) { 
+        if(people[x].nino == nino){
+            req.session.data['selectedPerson'] = people[x];
+        }
+    }
+    if(req.session.data['selectedPerson']!=null){
+        res.redirect("unset-interest-confirm-person");
     }
     else{
-        res.redirect("stop-request")
+        req.session.data['error'] = "true"
+        res.redirect("unset-interest")
     }
 })
 
-router.post('/' + version + '/manage-interest/stop-request-clarify', function (req, res) {
-    if(req.session.data['stopRequest'] == 'yes'){
-        let viewableInterestsArray =  req.session.data['viewableInterests']
-        let activeInterestsArray = req.session.data['activeInterests']
-        let tempObject = req.session.data['selectedPerson']
+router.post('/' + version + '/manage-interest/unset-interest-confirm-person', function (req, res) {
+    if(req.session.data['confirmPerson']=="Yes"){
 
-        for(let x = 0; x < viewableInterestsArray.length; x++) {
-            if(viewableInterestsArray[x].nino == tempObject.nino){
-                viewableInterestsArray.splice(x, 1);
+        if(req.session.data['activeInterests']){
+            let tempArray = req.session.data['activeInterests']
+            for (let x = 0; x < tempArray.length; x++) {
+                if(tempArray[x].nino == req.session.data['nino']){
+                    res.redirect("unset-interest-confirm-unset");
+                    return;
+                }
             }
-        }
-        for(let x = 0; x < activeInterestsArray.length; x++) {
-            if(activeInterestsArray[x].nino == tempObject.nino){
-                activeInterestsArray.splice(x, 1);
-            }
-        }
-        req.session.data['viewableInterests'] = viewableInterestsArray 
-        req.session.data['activeInterests'] = activeInterestsArray
-        res.redirect("stop-request-confirmation")
+        }       
+        res.redirect("unset-interest-no-interest")
     }
-    else{
-        res.redirect("clear-manage-sessions")
+    else if(req.session.data['confirmPerson']=="No"){
+        res.redirect("unset-interest")
     }
 })
 
+router.post('/' + version + '/manage-interest/unset-interest-confirm-unset', function (req, res) {
+
+    if(req.session.data['unsetInterestConfirm'] == "Yes"){
+        req.session.data['activeInterests'] = removeFromAnInterestList(req.session.data['activeInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the activeInterest array and current selected person
+        req.session.data['viewableInterests'] = removeFromAnInterestList(req.session.data['viewableInterests'], req.session.data['selectedPerson']); //call the remove function and pass across the viewableInterest array and current selected person
+        res.redirect('unset-interest-confirmation')
+    }
+    else{
+        res.redirect('./')
+    }
+    
+})
 
 router.get('/' + version + '/manage-interest/clear-manage-sessions', function (req, res) {
     delete req.session.data['confirmCitizen']
@@ -299,7 +285,19 @@ router.get('/' + version + '/manage-interest/clear-manage-sessions', function (r
 })
 
 
+// these function can be used over and over again in different parts of the routes file 
+function removeFromAnInterestList(interestList, selectedPerson) {
+    
+    let interestsArray =  interestList; //copy whats been passed to a local array for this function
+    let tempObject = selectedPerson; //copy which person has been passed across
 
-
+    for(let x = 0; x < interestsArray.length; x++) { //loop through all the records in the array
+        if(interestsArray[x].nino == tempObject.nino){ //we try to match each array record nino with the selected persons nino
+            interestsArray.splice(x, 1); // if we find a match we remove the object from the array
+        }
+    }
+    
+    return(interestsArray); // we return back to where we called the funtion from
+}
 
 
