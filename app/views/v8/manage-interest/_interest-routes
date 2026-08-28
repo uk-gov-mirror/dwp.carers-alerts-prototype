@@ -4,7 +4,7 @@ const router = govukPrototypeKit.requests.setupRouter()
 
 //routes sections
 
-let version = "v8";
+let version = "v8"; //we use this variable constantly in the routing below.
 
 router.post('/' + version + '/manage-interest/ur', function (req, res) {
     res.redirect("index")
@@ -14,42 +14,51 @@ router.post('/' + version + '/manage-interest/ur', function (req, res) {
 
 router.post('/' + version + '/manage-interest/set-interest', function (req, res) {
    req.session.data['error'] = "false"
-   let nino = req.session.data['nino'].toUpperCase().replace(/ /g,'')
-   req.session.data['nino'] = nino
-   let people = req.session.data['earnings']
-   req.session.data['selectedPerson'] = null
+   let nino = req.session.data['nino'].toUpperCase().replace(/ /g,'') //converts the nino to uppercase removing any spaces
+   req.session.data['nino'] = nino // writes the reformatted nino back to the session
+   
+   // this section uses the nino above and searches through our JSON data to see if a record matches
 
-   for (let x = 0; x < people.length; x++) { 
-        if(people[x].nino == nino){
-            req.session.data['selectedPerson'] = people[x];
+   let people = req.session.data['earnings'] // creates an array of the data in the JSON file for us to manipulate in this post
+   req.session.data['selectedPerson'] = null // removes anything from the session if it already exists. this becomes important a few lines down
+
+   for (let x = 0; x < people.length; x++) { // this loops through each person in our people array
+        if(people[x].nino == nino){ // we're looking for a matching nino
+            req.session.data['selectedPerson'] = people[x]; // if one is found, we copy all of the current object to our selected person session
         }
     }
-    if(req.session.data['selectedPerson']!=null){
+
+    if(req.session.data['selectedPerson']!=null){ // this means we found someone in the loop above as the session isn't empty
         res.redirect("set-interest-confirm");
     }
     else{
-        req.session.data['error'] = "true"
+        req.session.data['error'] = "true" // because we didn't find anyone we can trigger an error and redirect bck to the same page to show the error message on the page
         res.redirect("set-interest")
     }
 })
 
 router.post('/' + version + '/manage-interest/set-interest-confirm', function (req, res) {
+    //let page;
+    req.session.data['error'] = "false" // set the error to false in case it was triggered on the previous page
     
-    let page;
-    req.session.data['error'] = "false"
-    if(req.session.data['confirmPerson']=="Yes"){
-
-        if(req.session.data['activeInterests']){
-            let tempArray = req.session.data['activeInterests']
-            for (let x = 0; x < tempArray.length; x++) {
-                if(tempArray[x].nino == req.session.data['nino']){
-                    req.session.data['interestStart'] = new Date(2024-12-01)
-                    res.redirect("set-interest-view-earnings-confirm");
-                    return;
+    if(req.session.data['confirmPerson']=="Yes"){ // if they confirm the person is correct
+        
+        // As we work through creating interest we keep two arrays active
+        // data['activeInterests'] - this records objects where we've already set an interest
+        // data['viewableInterests'] - this records objects where we've already set an interest but no outcome has been recorded - this is how we know what to show in the view interest page
+        
+        // this section checks to see if we have the nino already set as an interest
+        if(req.session.data['activeInterests']){ // if the activeInterest array exists (it won't if this is your first time through)
+            let tempArray = req.session.data['activeInterests'] // creata a temporary array and load all the object from the activeInterests array
+            for (let x = 0; x < tempArray.length; x++) {  //loop through all the objects in the array
+                if(tempArray[x].nino == req.session.data['nino']){ //check for any matching ninos
+                    res.redirect("set-interest-view-earnings-confirm"); // if there is a match we skip the date entry screen
+                    return; // this posts the page stopping any header errors
                 }
             }
         }
 
+        // if no match was found we simply redirect basd on the journey flow
         if(req.session.data['benefit']=="Housing Benefit"){
             res.redirect("set-interest-benefit-select");
         }
@@ -57,48 +66,50 @@ router.post('/' + version + '/manage-interest/set-interest-confirm', function (r
             res.redirect("set-interest-start-date")
         }
 
-    }
+    } // if they select that the person isnt a match
     else if(req.session.data['confirmPerson']=="No"){
         res.redirect("set-interest")
     }
-    else{
+    else{ // if they don't make a selection then we trigger an on-page errror
         req.session.data['error'] = "true"
         res.redirect("set-interest-confirm")
     }
 
 })
+
 router.post('/' + version + '/manage-interest/set-interest-benefit-select', function (req, res) {
     res.redirect("set-interest-start-date")
 })
 
 router.post('/' + version + '/manage-interest/set-interest-start-date', function (req, res) {
-    // adding the interest start date and interest set date to the selectPerson array. This now gives a full interest record for the searched person
-    req.session.data.selectedPerson.interestSetDate = new Date() //setting date and time at point the page is posted
+    // we know create the two dates we need and them to the object in our selectedPerson array
+
+    // the first date is right now. this is the date and time we display in the view interest page
+    req.session.data.selectedPerson.interestSetDate = new Date() 
+    // the second we take the string inputs of the page and turn it into an actual date we can use later
     req.session.data.selectedPerson.interestStartDate = new Date(req.session.data['set-interest-year']+"-"+req.session.data['set-interest-month']+"-"+req.session.data['set-interest-day']) // the input from this page
     res.redirect("set-interest-view-earnings-confirm")
 })
 
 router.post('/' + version + '/manage-interest/set-interest-view-earnings-confirm', function (req, res) {
-
+    // no we have all the information, we can add them to our two array mentioned above - see line 47 & 48
+    
     // creates an array that tracks active interests
     req.session.data['interestSet'] = true
+    
     let tempArray = []
     let tempObject = req.session.data['selectedPerson']
-    let userListed = false;
+    let userListed = false; // create a temp variable we'll use later to check if we found anything
     req.session.data.newEarningsStartDate = null;
 
-    if(req.session.data['activeInterests']){
-        tempArray = req.session.data['activeInterests']  
+    if(req.session.data['activeInterests']){ // checking to see if the activeInterests array already exists
+        tempArray = req.session.data['activeInterests']  // if it does we bring the data into out temporary array
     }
 
     for (let x = 0; x < tempArray.length; x++) {
         if(tempArray[x].nino == tempObject.nino){
             // user is already in list
             userListed = true;
-        }
-        else{
-            //user not in list
-            
         }
     }
 
@@ -287,17 +298,12 @@ router.get('/' + version + '/manage-interest/clear-manage-sessions', function (r
 
 // these function can be used over and over again in different parts of the routes file 
 function removeFromAnInterestList(interestList, selectedPerson) {
-    
-    let interestsArray =  interestList; //copy whats been passed to a local array for this function
-    let tempObject = selectedPerson; //copy which person has been passed across
-
-    for(let x = 0; x < interestsArray.length; x++) { //loop through all the records in the array
-        if(interestsArray[x].nino == tempObject.nino){ //we try to match each array record nino with the selected persons nino
-            interestsArray.splice(x, 1); // if we find a match we remove the object from the array
+    for(let x = 0; x < interestList.length; x++) { //loop through all the records in the array
+        if(interestList[x].nino == selectedPerson.nino){ //we try to match each array record nino with the selected persons nino
+            interestList.splice(x, 1); // if we find a match we remove the object from the array
         }
     }
-    
-    return(interestsArray); // we return back to where we called the funtion from
+    return(interestList); // we return back to where we called the funtion from
 }
 
 
